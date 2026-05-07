@@ -1,7 +1,7 @@
 trigger: none
 
 pool:
-  name: wipro_AI
+  name: wipro
 
 stages:
 
