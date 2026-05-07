@@ -1,0 +1,89 @@
+trigger: none
+
+pool:
+  name: wipro_AI
+
+stages:
+
+# ---------------- INIT + VALIDATE ----------------
+- stage: Validate
+  displayName: 'Terraform Init & Validate'
+
+  jobs:
+  - job: ValidateJob
+    steps:
+
+    - task: TerraformTask@5
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'wiproserviceconnection'
+        backendAzureRmResourceGroupName: 'wipropipe'
+        backendAzureRmStorageAccountName: 'wipropipst'
+        backendAzureRmContainerName: 'wipropip'
+        backendAzureRmKey: 'Wipto.tfstste'
+
+    - task: TerraformTask@5
+      displayName: 'Terraform Validate'
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+
+
+# ---------------- PLAN ----------------
+- stage: Plan
+  displayName: 'Terraform Plan'
+  dependsOn: Validate
+
+  jobs:
+  - job: PlanJob
+    steps:
+
+    - task: TerraformTask@5
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'wiproserviceconnection'
+        backendAzureRmResourceGroupName: 'wipropipe'
+        backendAzureRmStorageAccountName: 'wipropipst'
+        backendAzureRmContainerName: 'wipropip'
+        backendAzureRmKey: 'Wipto.tfstste'
+
+    - task: TerraformTask@5
+      displayName: 'Terraform Plan'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        environmentServiceNameAzureRM: 'wiproserviceconnection'
+
+
+# ---------------- APPLY (AUTO MODE) ----------------
+- stage: Apply
+  displayName: 'Terraform Apply (AUTO)'
+  dependsOn: Plan
+
+  jobs:
+  - job: ApplyJob
+    steps:
+
+    - task: TerraformTask@5
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'wiproserviceconnection'
+        backendAzureRmResourceGroupName: 'wipropipe'
+        backendAzureRmStorageAccountName: 'wipropipst'
+        backendAzureRmContainerName: 'wipropip'
+        backendAzureRmKey: 'Wipto.tfstste'
+
+    - task: TerraformTask@5
+      displayName: 'Terraform Apply (Auto Approve)'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        environmentServiceNameAzureRM: 'wiproserviceconnection'
+        commandOptions: '-auto-approve'
+
