@@ -1,7 +1,7 @@
 roja=["sudhir","arun1","dinesh1","rmama","sheela","getta"]
 location = "westindia"
 
-rosni={"malik"="eastusslv","surave"="indiasouthcentral","talat"="northeastus5","dinesh"="saudiarabiaeast","arun"="southeastasia3"}
+rosni={"malik"="Central India","surave"="South India","talat"="West India","dinesh"="North Central US","arun"="South Central US"}
 
 
 
